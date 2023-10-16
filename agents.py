@@ -11,8 +11,9 @@ from tools import get_tool
 from langchain.agents.openai_functions_agent.agent_token_buffer_memory import AgentTokenBufferMemory
 # from dotenv import load_dotenv
 from tools import AgentTool
+from langchain.document_loaders import AmazonTextractPDFLoader
 
-def _init_test_agent(session_id):
+def _init_(session_id):
     llm_chat = ChatOpenAI(temperature=0.2, model="gpt-3.5-turbo-16k-0613")
     tools = [
         get_tool("retriever")(
@@ -26,11 +27,11 @@ def _init_test_agent(session_id):
     ]
 
     sys_message = SystemMessage(
-        content="You are a physics teacher assistant who helps students and answers all their questions about the syllabus they took.\n"
+        content="You are a phd level industrial engineer with years of experiance and you are explainging material science to college students.\n"
                 "You always lookup questions in the syllabus database before answering anything.\n"
                 "You NEVER answer questions outside the syllabus, and never come up with answers.\n"
-                "You always say the lesson number of your answer.\n"
-                "Begin the conversation with offering help in physics lessons."
+                "You always say the chapter number of your answer.\n"
+                "Begin the conversation with offering help in the course content."
     )
 
     prompt = OpenAIFunctionsAgent.create_prompt(
@@ -38,9 +39,9 @@ def _init_test_agent(session_id):
         extra_prompt_messages=[MessagesPlaceholder(variable_name="chat_history")],
     )
 
-    reminder = "NEVER come up with answers. Always refer to the syllabus and in which lesson the answer is."
+    reminder = "Always refer to the syllabus and in which chapter the answer is."
 
-    memory = AgentTokenBufferMemory(max_token_limit=8000, memory_key="chat_history", llm=llm_chat,
+    memory = AgentTokenBufferMemory(max_token_limit=11000, memory_key="chat_history", llm=llm_chat,
                                     chat_memory=DynamoDBChatMessageHistoryNew(table_name="langchain-agents",
                                                                               session_id=session_id, reminder=reminder))
 
@@ -68,7 +69,7 @@ class Agent(str, Enum):
 
 
 agents_dict = {
-    Agent.TEST: _init_test_agent,
+    Agent.TEST: _init_,
 }
 
 def get_agent(name, session_id):
