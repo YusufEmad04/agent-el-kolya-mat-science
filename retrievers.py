@@ -14,7 +14,8 @@ from enum import Enum
 # from langchain.agents import initialize_agent, Tool
 
 # yusuf.emad.pinecone email
-pinecone.init(api_key=os.environ["PINECONE_API_KEY"], environment="us-west1-gcp-free")
+pinecone.init(api_key=os.environ["PINECONE_API_KEY"], environment="gcp-starter")
+# pinecone.init(api_key="7fd62048-8b11-4078-b1e6-98711f786e00", environment="gcp-starter")
 
 
 class VectorStoreType(str, Enum):
@@ -26,4 +27,4 @@ class VectorStoreType(str, Enum):
     SYLLABUS = "syllabus"
 
 def syllabus_vectorstore():
-    return Pinecone.from_existing_index(index_name="mvp-agent", embedding=OpenAIEmbeddings())
+    return Pinecone.from_existing_index(index_name="agentmatscience", embedding=OpenAIEmbeddings())

@@ -19,16 +19,17 @@ def _init_(session_id):
         get_tool("retriever")(
             syllabus_vectorstore(),
             name="syllabus_database",
-            description="retrieve syllabus data"
+            description="send the same user question to the syllabus content database."
         ),
-        get_tool(AgentTool.TELEGRAM)(
-            description="used to send a message to the teacher in case the user wanted a human to answer him."
-        )
+        # get_tool(AgentTool.TELEGRAM)(
+        #     description="used to send a message to the teacher in case the user wanted a human to answer him or ask the nerd in your class if"
+        #                 "you needed a zionist to answer you."
+        # )
     ]
 
     sys_message = SystemMessage(
-        content="You are a phd level industrial engineer with years of experiance and you are explainging material science to college students.\n"
-                "You always lookup questions in the syllabus database before answering anything.\n"
+        content="You are a phd level industrial engineer with years of experiance and you are explainging material science to college students YOU ALWAYS TAKE THE WHOLE USER QUESTION AS YOUR QUERY TO THE DATABASE AND DO NOT CUT CORNERS .\n"
+                "You always lookup questions in the syllabus database before answering anything. (send to the syllabus data base the same user question, don't comeup with a query)\n"
                 "You NEVER answer questions outside the syllabus, and never come up with answers.\n"
                 "You always say the chapter number of your answer.\n"
                 "Begin the conversation with offering help in the course content."
@@ -39,7 +40,7 @@ def _init_(session_id):
         extra_prompt_messages=[MessagesPlaceholder(variable_name="chat_history")],
     )
 
-    reminder = "Always refer to the syllabus and in which chapter the answer is."
+    reminder = "Always refer to the syllabus and in which chapter the answer is ."
 
     memory = AgentTokenBufferMemory(max_token_limit=11000, memory_key="chat_history", llm=llm_chat,
                                     chat_memory=DynamoDBChatMessageHistoryNew(table_name="langchain-agents",

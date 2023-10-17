@@ -15,7 +15,7 @@ phases:
         export OPENAI_API_KEY=$OPENAI_API_KEY
         export PINECONE_API_KEY=$PINECONE_API_KEY
 
-      - aws ecr get-login-password --region us-west-1 | docker login --username AWS --password-stdin 073619244051.dkr.ecr.us-west-1.amazonaws.com
+      - aws ecr get-login-password --region us-west-1 | docker login --username AWS --password-stdin 667961282382.dkr.ecr.us-west-1.amazonaws.com
 
   build:
     commands:
@@ -23,8 +23,8 @@ phases:
       # print env variable
       - echo $OPENAI_API_KEY
       - echo $PINECONE_API_KEY
-      - docker build -t law-firm . --build-arg VAR1=$OPENAI_API_KEY --build-arg VAR2=$PINECONE_API_KEY
-      - docker tag law-firm:latest 073619244051.dkr.ecr.us-west-1.amazonaws.com/law-firm:latest
-      - docker push 073619244051.dkr.ecr.us-west-1.amazonaws.com/law-firm:latest
+      - docker build -t agent-el-kolya . --build-arg VAR1=$OPENAI_API_KEY --build-arg VAR2=$PINECONE_API_KEY
+      - docker tag agent-el-kolya:latest 667961282382.dkr.ecr.us-west-1.amazonaws.com/agent-el-kolya:latest
+      - docker push 667961282382.dkr.ecr.us-west-1.amazonaws.com/agent-el-kolya:latest
       # update lambda function with new docker image
-      - aws lambda update-function-code --function-name test --image-uri 073619244051.dkr.ecr.us-west-1.amazonaws.com/law-firm:latest
+      #- aws lambda update-function-code --function-name test --image-uri 073619244051.dkr.ecr.us-west-1.amazonaws.com/law-firm:latest
